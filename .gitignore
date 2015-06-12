@@ -1,0 +1,14 @@
+*Debug*
+*.sln
+*.suo
+*.vcxproj
+*.filters
+*.user
+StartServer/*
+WMTS/*
+
+!*/*.cfg
+!WMTS/src
+!*/*.h
+!*/*.cpp
+!*/*.ice
