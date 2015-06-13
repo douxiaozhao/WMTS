@@ -6,7 +6,8 @@ module WMTSMODULE
 	/*
 	   GetTileµÄ²ÎÊý
 	*/
-	struct GetTileParameter{
+	struct GetTileParameter
+    {
 		string layer;
 		string style;
 		string format;

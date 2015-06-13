@@ -5,7 +5,8 @@ module OWSMODULE
 	sequence<byte> byteSeq;
 	sequence<string> stringSeq;
 
-    struct BBOX{        
+    struct BBOX
+    {
         double xmin;
         double ymin;
         double xmax;
@@ -20,7 +21,7 @@ module OWSMODULE
         OWSWAIT,           /** 0 正在准备数据*/
         OWSSTART,          /** 1 数据准备*/
         OWSFINISH,         /** 2 传输完毕*/
-        OWSERROR           /** 3 发生错误*/ 
+        OWSERROR           /** 3 发生错误*/
     };
 
 	/*
@@ -29,7 +30,7 @@ module OWSMODULE
 	struct OWSTask
 	{
 		string taskID;               /** 任务的唯一标志， uuid*/
-        OWSState state;              /** 当前这个任务的状态*/ 
+        OWSState state;              /** 当前这个任务的状态*/
 		int length;					 /** 当前可读数据的长度*/
 	};
 
