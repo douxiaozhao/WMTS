@@ -13,24 +13,30 @@ public:
 	WMTSI(const ::std::string&, const ::std::string& );
 	~WMTSI(void);
 
+	/*
+	 */
+	virtual OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType, const ::Ice::Current& );
+
+	std::string addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Current& /* = ::Ice::Current */);
+
     /*
      * @brief GetCapabilities
      * @parm Ice运行时
      * @return 返回一个任务
      */
-	virtual ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Current&);
+	virtual ::OWSMODULE::OWSTask GetCapabilities(const ::std::string&, const ::Ice::Current&);
 
     /*
      * @brief GetTile
      * @return 返回一个任务
      */
-	virtual ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Current&);
+	virtual ::OWSMODULE::OWSTask GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Current&);
 
     /*
      * @brief GetFeatureInfo
      * @return 返回一个任务
      */
-	virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Current&);
+	virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Current&);
 
     /*
      * @brief 检查任务状态

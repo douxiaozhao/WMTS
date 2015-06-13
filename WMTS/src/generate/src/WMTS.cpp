@@ -40,6 +40,10 @@
 namespace
 {
 
+const ::std::string __WMTSMODULE__WMTS__getConfit_name = "getConfit";
+
+const ::std::string __WMTSMODULE__WMTS__addOneConfig_name = "addOneConfig";
+
 const ::std::string __WMTSMODULE__WMTS__GetCapabilities_name = "GetCapabilities";
 
 const ::std::string __WMTSMODULE__WMTS__GetTile_name = "GetTile";
@@ -69,20 +73,20 @@ void
     }
 }
 
-::OWSMODULE::OWSTask
-IceProxy::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __ctx)
+::OWSMODULE::byteSeq
+IceProxy::WMTSMODULE::WMTS::getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context* __ctx)
 {
-    ::IceInternal::InvocationObserver __observer(this, __WMTSMODULE__WMTS__GetCapabilities_name, __ctx);
+    ::IceInternal::InvocationObserver __observer(this, __WMTSMODULE__WMTS__getConfit_name, __ctx);
     int __cnt = 0;
     while(true)
     {
         ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
         try
         {
-            __checkTwowayOnly(__WMTSMODULE__WMTS__GetCapabilities_name);
+            __checkTwowayOnly(__WMTSMODULE__WMTS__getConfit_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::WMTSMODULE::WMTS* __del = dynamic_cast< ::IceDelegate::WMTSMODULE::WMTS*>(__delBase.get());
-            return __del->GetCapabilities(__ctx, __observer);
+            return __del->getConfit(type, __ctx, __observer);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -96,14 +100,171 @@ IceProxy::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __ctx)
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::WMTSMODULE::WMTS::begin_GetCapabilities(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::WMTSMODULE::WMTS::begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__WMTSMODULE__WMTS__getConfit_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WMTSMODULE__WMTS__getConfit_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__WMTSMODULE__WMTS__getConfit_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(type);
+        __result->__endWriteParams();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::OWSMODULE::byteSeq
+IceProxy::WMTSMODULE::WMTS::end_getConfit(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __WMTSMODULE__WMTS__getConfit_name);
+    ::OWSMODULE::byteSeq __ret;
+    bool __ok = __result->__wait();
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __result->__throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+            }
+        }
+        ::IceInternal::BasicStream* __is = __result->__startReadParams();
+        __is->read(__ret);
+        __result->__endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& ex)
+    {
+        __result->__getObserver().failed(ex.ice_name());
+        throw;
+    }
+}
+
+::std::string
+IceProxy::WMTSMODULE::WMTS::addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::InvocationObserver __observer(this, __WMTSMODULE__WMTS__addOneConfig_name, __ctx);
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__WMTSMODULE__WMTS__addOneConfig_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::WMTSMODULE::WMTS* __del = dynamic_cast< ::IceDelegate::WMTSMODULE::WMTS*>(__delBase.get());
+            return __del->addOneConfig(type, config, __ctx, __observer);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex, __observer);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt, __observer);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::WMTSMODULE::WMTS::begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__WMTSMODULE__WMTS__addOneConfig_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WMTSMODULE__WMTS__addOneConfig_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__WMTSMODULE__WMTS__addOneConfig_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(type);
+        __os->write(config);
+        __result->__endWriteParams();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::std::string
+IceProxy::WMTSMODULE::WMTS::end_addOneConfig(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __WMTSMODULE__WMTS__addOneConfig_name);
+    ::std::string __ret;
+    bool __ok = __result->__wait();
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __result->__throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+            }
+        }
+        ::IceInternal::BasicStream* __is = __result->__startReadParams();
+        __is->read(__ret);
+        __result->__endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& ex)
+    {
+        __result->__getObserver().failed(ex.ice_name());
+        throw;
+    }
+}
+
+::OWSMODULE::OWSTask
+IceProxy::WMTSMODULE::WMTS::GetCapabilities(const ::std::string& token, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::InvocationObserver __observer(this, __WMTSMODULE__WMTS__GetCapabilities_name, __ctx);
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__WMTSMODULE__WMTS__GetCapabilities_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::WMTSMODULE::WMTS* __del = dynamic_cast< ::IceDelegate::WMTSMODULE::WMTS*>(__delBase.get());
+            return __del->GetCapabilities(token, __ctx, __observer);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex, __observer);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt, __observer);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::WMTSMODULE::WMTS::begin_GetCapabilities(const ::std::string& token, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__WMTSMODULE__WMTS__GetCapabilities_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WMTSMODULE__WMTS__GetCapabilities_name, __del, __cookie);
     try
     {
         __result->__prepare(__WMTSMODULE__WMTS__GetCapabilities_name, ::Ice::Normal, __ctx);
-        __result->__writeEmptyParams();
+        ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(token);
+        __result->__endWriteParams();
         __result->__send(true);
     }
     catch(const ::Ice::LocalException& __ex)
@@ -145,7 +306,7 @@ IceProxy::WMTSMODULE::WMTS::end_GetCapabilities(const ::Ice::AsyncResultPtr& __r
 }
 
 ::OWSMODULE::OWSTask
-IceProxy::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __ctx)
+IceProxy::WMTSMODULE::WMTS::GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __ctx)
 {
     ::IceInternal::InvocationObserver __observer(this, __WMTSMODULE__WMTS__GetTile_name, __ctx);
     int __cnt = 0;
@@ -157,7 +318,7 @@ IceProxy::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& parame
             __checkTwowayOnly(__WMTSMODULE__WMTS__GetTile_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::WMTSMODULE::WMTS* __del = dynamic_cast< ::IceDelegate::WMTSMODULE::WMTS*>(__delBase.get());
-            return __del->GetTile(parameter, __ctx, __observer);
+            return __del->GetTile(token, parameter, __ctx, __observer);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -171,7 +332,7 @@ IceProxy::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& parame
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::WMTSMODULE::WMTS::begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::WMTSMODULE::WMTS::begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__WMTSMODULE__WMTS__GetTile_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WMTSMODULE__WMTS__GetTile_name, __del, __cookie);
@@ -179,6 +340,7 @@ IceProxy::WMTSMODULE::WMTS::begin_GetTile(const ::WMTSMODULE::GetTileParameter& 
     {
         __result->__prepare(__WMTSMODULE__WMTS__GetTile_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(token);
         __os->write(parameter);
         __result->__endWriteParams();
         __result->__send(true);
@@ -222,7 +384,7 @@ IceProxy::WMTSMODULE::WMTS::end_GetTile(const ::Ice::AsyncResultPtr& __result)
 }
 
 ::OWSMODULE::OWSTask
-IceProxy::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __ctx)
+IceProxy::WMTSMODULE::WMTS::GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __ctx)
 {
     ::IceInternal::InvocationObserver __observer(this, __WMTSMODULE__WMTS__GetFeatureInfo_name, __ctx);
     int __cnt = 0;
@@ -234,7 +396,7 @@ IceProxy::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&
             __checkTwowayOnly(__WMTSMODULE__WMTS__GetFeatureInfo_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::WMTSMODULE::WMTS* __del = dynamic_cast< ::IceDelegate::WMTSMODULE::WMTS*>(__delBase.get());
-            return __del->GetFeatureInfo(parameter, I, J, information, __ctx, __observer);
+            return __del->GetFeatureInfo(token, parameter, I, J, information, __ctx, __observer);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -248,7 +410,7 @@ IceProxy::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::WMTSMODULE::WMTS::begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::WMTSMODULE::WMTS::begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__WMTSMODULE__WMTS__GetFeatureInfo_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __WMTSMODULE__WMTS__GetFeatureInfo_name, __del, __cookie);
@@ -256,6 +418,7 @@ IceProxy::WMTSMODULE::WMTS::begin_GetFeatureInfo(const ::WMTSMODULE::GetTilePara
     {
         __result->__prepare(__WMTSMODULE__WMTS__GetFeatureInfo_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(token);
         __os->write(parameter);
         __os->write(I);
         __os->write(J);
@@ -325,11 +488,103 @@ IceProxy::WMTSMODULE::WMTS::__newInstance() const
     return new WMTS;
 }
 
+::OWSMODULE::byteSeq
+IceDelegateM::WMTSMODULE::WMTS::getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __WMTSMODULE__WMTS__getConfit_name, ::Ice::Normal, __context, __observer);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(type);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    bool __ok = __og.invoke();
+    ::OWSMODULE::byteSeq __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.startReadParams();
+        __is->read(__ret);
+        __og.endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
+::std::string
+IceDelegateM::WMTSMODULE::WMTS::addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __WMTSMODULE__WMTS__addOneConfig_name, ::Ice::Normal, __context, __observer);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(type);
+        __os->write(config);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    bool __ok = __og.invoke();
+    ::std::string __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.startReadParams();
+        __is->read(__ret);
+        __og.endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
 ::OWSMODULE::OWSTask
-IceDelegateM::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+IceDelegateM::WMTSMODULE::WMTS::GetCapabilities(const ::std::string& token, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
 {
     ::IceInternal::Outgoing __og(__handler.get(), __WMTSMODULE__WMTS__GetCapabilities_name, ::Ice::Normal, __context, __observer);
-    __og.writeEmptyParams();
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(token);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
     bool __ok = __og.invoke();
     ::OWSMODULE::OWSTask __ret;
     try
@@ -358,12 +613,13 @@ IceDelegateM::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __context,
 }
 
 ::OWSMODULE::OWSTask
-IceDelegateM::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+IceDelegateM::WMTSMODULE::WMTS::GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
 {
     ::IceInternal::Outgoing __og(__handler.get(), __WMTSMODULE__WMTS__GetTile_name, ::Ice::Normal, __context, __observer);
     try
     {
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(token);
         __os->write(parameter);
         __og.endWriteParams();
     }
@@ -399,12 +655,13 @@ IceDelegateM::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& pa
 }
 
 ::OWSMODULE::OWSTask
-IceDelegateM::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+IceDelegateM::WMTSMODULE::WMTS::GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
 {
     ::IceInternal::Outgoing __og(__handler.get(), __WMTSMODULE__WMTS__GetFeatureInfo_name, ::Ice::Normal, __context, __observer);
     try
     {
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(token);
         __os->write(parameter);
         __os->write(I);
         __os->write(J);
@@ -442,16 +699,17 @@ IceDelegateM::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParame
     }
 }
 
-::OWSMODULE::OWSTask
-IceDelegateD::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+::OWSMODULE::byteSeq
+IceDelegateD::WMTSMODULE::WMTS::getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::OWSMODULE::OWSTask& __result, const ::Ice::Current& __current) : 
+        _DirectI(::OWSMODULE::byteSeq& __result, ::WMTSMODULE::SourceType __p_type, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
-            _result(__result)
+            _result(__result),
+            _m_type(__p_type)
         {
         }
         
@@ -463,21 +721,92 @@ IceDelegateD::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __context,
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->GetCapabilities(_current);
+            _result = servant->getConfit(_m_type, _current);
             return ::Ice::DispatchOK;
         }
         
     private:
         
-        ::OWSMODULE::OWSTask& _result;
+        ::OWSMODULE::byteSeq& _result;
+        ::WMTSMODULE::SourceType _m_type;
     };
     
     ::Ice::Current __current;
-    __initCurrent(__current, __WMTSMODULE__WMTS__GetCapabilities_name, ::Ice::Normal, __context);
-    ::OWSMODULE::OWSTask __result;
+    __initCurrent(__current, __WMTSMODULE__WMTS__getConfit_name, ::Ice::Normal, __context);
+    ::OWSMODULE::byteSeq __result;
     try
     {
-        _DirectI __direct(__result, __current);
+        _DirectI __direct(__result, type, __current);
+        try
+        {
+            __direct.getServant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
+::std::string
+IceDelegateD::WMTSMODULE::WMTS::addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::std::string& __result, ::WMTSMODULE::SourceType __p_type, const ::std::string& __p_config, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result),
+            _m_type(__p_type),
+            _m_config(__p_config)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::WMTSMODULE::WMTS* servant = dynamic_cast< ::WMTSMODULE::WMTS*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->addOneConfig(_m_type, _m_config, _current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::std::string& _result;
+        ::WMTSMODULE::SourceType _m_type;
+        const ::std::string& _m_config;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __WMTSMODULE__WMTS__addOneConfig_name, ::Ice::Normal, __context);
+    ::std::string __result;
+    try
+    {
+        _DirectI __direct(__result, type, config, __current);
         try
         {
             __direct.getServant()->__collocDispatch(__direct);
@@ -509,15 +838,84 @@ IceDelegateD::WMTSMODULE::WMTS::GetCapabilities(const ::Ice::Context* __context,
 }
 
 ::OWSMODULE::OWSTask
-IceDelegateD::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+IceDelegateD::WMTSMODULE::WMTS::GetCapabilities(const ::std::string& token, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::OWSMODULE::OWSTask& __result, const ::WMTSMODULE::GetTileParameter& __p_parameter, const ::Ice::Current& __current) : 
+        _DirectI(::OWSMODULE::OWSTask& __result, const ::std::string& __p_token, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result),
+            _m_token(__p_token)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::WMTSMODULE::WMTS* servant = dynamic_cast< ::WMTSMODULE::WMTS*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->GetCapabilities(_m_token, _current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::OWSMODULE::OWSTask& _result;
+        const ::std::string& _m_token;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __WMTSMODULE__WMTS__GetCapabilities_name, ::Ice::Normal, __context);
+    ::OWSMODULE::OWSTask __result;
+    try
+    {
+        _DirectI __direct(__result, token, __current);
+        try
+        {
+            __direct.getServant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
+::OWSMODULE::OWSTask
+IceDelegateD::WMTSMODULE::WMTS::GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::OWSMODULE::OWSTask& __result, const ::std::string& __p_token, const ::WMTSMODULE::GetTileParameter& __p_parameter, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result),
+            _m_token(__p_token),
             _m_parameter(__p_parameter)
         {
         }
@@ -530,13 +928,14 @@ IceDelegateD::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& pa
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->GetTile(_m_parameter, _current);
+            _result = servant->GetTile(_m_token, _m_parameter, _current);
             return ::Ice::DispatchOK;
         }
         
     private:
         
         ::OWSMODULE::OWSTask& _result;
+        const ::std::string& _m_token;
         const ::WMTSMODULE::GetTileParameter& _m_parameter;
     };
     
@@ -545,7 +944,7 @@ IceDelegateD::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& pa
     ::OWSMODULE::OWSTask __result;
     try
     {
-        _DirectI __direct(__result, parameter, __current);
+        _DirectI __direct(__result, token, parameter, __current);
         try
         {
             __direct.getServant()->__collocDispatch(__direct);
@@ -577,15 +976,16 @@ IceDelegateD::WMTSMODULE::WMTS::GetTile(const ::WMTSMODULE::GetTileParameter& pa
 }
 
 ::OWSMODULE::OWSTask
-IceDelegateD::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+IceDelegateD::WMTSMODULE::WMTS::GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::OWSMODULE::OWSTask& __result, const ::WMTSMODULE::GetTileParameter& __p_parameter, ::Ice::Int __p_I, ::Ice::Int __p_J, const ::std::string& __p_information, const ::Ice::Current& __current) : 
+        _DirectI(::OWSMODULE::OWSTask& __result, const ::std::string& __p_token, const ::WMTSMODULE::GetTileParameter& __p_parameter, ::Ice::Int __p_I, ::Ice::Int __p_J, const ::std::string& __p_information, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result),
+            _m_token(__p_token),
             _m_parameter(__p_parameter),
             _m_I(__p_I),
             _m_J(__p_J),
@@ -601,13 +1001,14 @@ IceDelegateD::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParame
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->GetFeatureInfo(_m_parameter, _m_I, _m_J, _m_information, _current);
+            _result = servant->GetFeatureInfo(_m_token, _m_parameter, _m_I, _m_J, _m_information, _current);
             return ::Ice::DispatchOK;
         }
         
     private:
         
         ::OWSMODULE::OWSTask& _result;
+        const ::std::string& _m_token;
         const ::WMTSMODULE::GetTileParameter& _m_parameter;
         ::Ice::Int _m_I;
         ::Ice::Int _m_J;
@@ -619,7 +1020,7 @@ IceDelegateD::WMTSMODULE::WMTS::GetFeatureInfo(const ::WMTSMODULE::GetTileParame
     ::OWSMODULE::OWSTask __result;
     try
     {
-        _DirectI __direct(__result, parameter, I, J, information, __current);
+        _DirectI __direct(__result, token, parameter, I, J, information, __current);
         try
         {
             __direct.getServant()->__collocDispatch(__direct);
@@ -688,11 +1089,46 @@ WMTSMODULE::WMTS::ice_staticId()
 }
 
 ::Ice::DispatchStatus
+WMTSMODULE::WMTS::___getConfit(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::WMTSMODULE::SourceType type;
+    __is->read(type);
+    __inS.endReadParams();
+    ::OWSMODULE::byteSeq __ret = getConfit(type, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+WMTSMODULE::WMTS::___addOneConfig(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::WMTSMODULE::SourceType type;
+    ::std::string config;
+    __is->read(type);
+    __is->read(config);
+    __inS.endReadParams();
+    ::std::string __ret = addOneConfig(type, config, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
 WMTSMODULE::WMTS::___GetCapabilities(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
-    __inS.readEmptyParams();
-    ::OWSMODULE::OWSTask __ret = GetCapabilities(__current);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string token;
+    __is->read(token);
+    __inS.endReadParams();
+    ::OWSMODULE::OWSTask __ret = GetCapabilities(token, __current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
     __inS.__endWriteParams(true);
@@ -704,10 +1140,12 @@ WMTSMODULE::WMTS::___GetTile(::IceInternal::Incoming& __inS, const ::Ice::Curren
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string token;
     ::WMTSMODULE::GetTileParameter parameter;
+    __is->read(token);
     __is->read(parameter);
     __inS.endReadParams();
-    ::OWSMODULE::OWSTask __ret = GetTile(parameter, __current);
+    ::OWSMODULE::OWSTask __ret = GetTile(token, parameter, __current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
     __inS.__endWriteParams(true);
@@ -719,16 +1157,18 @@ WMTSMODULE::WMTS::___GetFeatureInfo(::IceInternal::Incoming& __inS, const ::Ice:
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string token;
     ::WMTSMODULE::GetTileParameter parameter;
     ::Ice::Int I;
     ::Ice::Int J;
     ::std::string information;
+    __is->read(token);
     __is->read(parameter);
     __is->read(I);
     __is->read(J);
     __is->read(information);
     __inS.endReadParams();
-    ::OWSMODULE::OWSTask __ret = GetFeatureInfo(parameter, I, J, information, __current);
+    ::OWSMODULE::OWSTask __ret = GetFeatureInfo(token, parameter, I, J, information, __current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
     __inS.__endWriteParams(true);
@@ -744,6 +1184,8 @@ const ::std::string __WMTSMODULE__WMTS_all[] =
     "GetFeatureInfo",
     "GetTile",
     "ReadData",
+    "addOneConfig",
+    "getConfit",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -756,7 +1198,7 @@ const ::std::string __WMTSMODULE__WMTS_all[] =
 ::Ice::DispatchStatus
 WMTSMODULE::WMTS::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__WMTSMODULE__WMTS_all, __WMTSMODULE__WMTS_all + 10, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__WMTSMODULE__WMTS_all, __WMTSMODULE__WMTS_all + 12, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -786,21 +1228,29 @@ WMTSMODULE::WMTS::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& 
         }
         case 5:
         {
-            return ___ice_id(in, current);
+            return ___addOneConfig(in, current);
         }
         case 6:
         {
-            return ___ice_ids(in, current);
+            return ___getConfit(in, current);
         }
         case 7:
         {
-            return ___ice_isA(in, current);
+            return ___ice_id(in, current);
         }
         case 8:
         {
-            return ___ice_ping(in, current);
+            return ___ice_ids(in, current);
         }
         case 9:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 10:
+        {
+            return ___ice_ping(in, current);
+        }
+        case 11:
         {
             return ___shutdown(in, current);
         }

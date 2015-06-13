@@ -197,6 +197,14 @@ struct GetTileParameter
     }
 };
 
+enum SourceType
+{
+    localFS,
+    localDB,
+    localMultiDB,
+    cloud
+};
+
 }
 
 namespace Ice
@@ -237,10 +245,26 @@ struct StreamReader< ::WMTSMODULE::GetTileParameter, S>
     }
 };
 
+template<>
+struct StreamableTraits< ::WMTSMODULE::SourceType>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryEnum;
+    static const int minValue = 0;
+    static const int maxValue = 3;
+    static const int minWireSize = 1;
+    static const bool fixedLength = false;
+};
+
 }
 
 namespace WMTSMODULE
 {
+
+class Callback_WMTS_getConfit_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_WMTS_getConfit_Base> Callback_WMTS_getConfitPtr;
+
+class Callback_WMTS_addOneConfig_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_WMTS_addOneConfig_Base> Callback_WMTS_addOneConfigPtr;
 
 class Callback_WMTS_GetCapabilities_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_WMTS_GetCapabilities_Base> Callback_WMTS_GetCapabilitiesPtr;
@@ -263,39 +287,265 @@ class WMTS : virtual public ::IceProxy::OWSMODULE::DataOperation
 {
 public:
 
-    ::OWSMODULE::OWSTask GetCapabilities()
+    ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType type)
     {
-        return GetCapabilities(0);
+        return getConfit(type, 0);
     }
-    ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Context& __ctx)
+    ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context& __ctx)
     {
-        return GetCapabilities(&__ctx);
+        return getConfit(type, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_GetCapabilities(const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    begin_getConfit(::WMTSMODULE::SourceType type, const ::IceInternal::Function<void (const ::OWSMODULE::byteSeq&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_GetCapabilities(0, response, exception, sent);
+        return __begin_getConfit(type, 0, response, exception, sent);
     }
     ::Ice::AsyncResultPtr
-    begin_GetCapabilities(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_getConfit(::WMTSMODULE::SourceType type, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_GetCapabilities(0, ::Ice::newCallback(completed, sent), 0);
+        return begin_getConfit(type, 0, ::Ice::newCallback(completed, sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_GetCapabilities(const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::byteSeq&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_GetCapabilities(&ctx, response, exception, sent);
+        return __begin_getConfit(type, &ctx, response, exception, sent);
     }
     ::Ice::AsyncResultPtr
-    begin_GetCapabilities(const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_GetCapabilities(&ctx, ::Ice::newCallback(completed, sent));
+        return begin_getConfit(type, &ctx, ::Ice::newCallback(completed, sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_GetCapabilities(const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
+    ::Ice::AsyncResultPtr __begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::byteSeq&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (const ::OWSMODULE::byteSeq&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::WMTSMODULE::WMTSPrx __proxy = ::WMTSMODULE::WMTSPrx::uncheckedCast(__result->getProxy());
+                ::OWSMODULE::byteSeq __ret;
+                try
+                {
+                    __ret = __proxy->end_getConfit(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (const ::OWSMODULE::byteSeq&)> _response;
+        };
+        return begin_getConfit(type, ctx, new Cpp11CB(response, exception, sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType type)
+    {
+        return begin_getConfit(type, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context& __ctx)
+    {
+        return begin_getConfit(type, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getConfit(type, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getConfit(type, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType type, const ::WMTSMODULE::Callback_WMTS_getConfitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getConfit(type, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType type, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_getConfitPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getConfit(type, &__ctx, __del, __cookie);
+    }
+
+    ::OWSMODULE::byteSeq end_getConfit(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_getConfit(::WMTSMODULE::SourceType, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::std::string addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config)
+    {
+        return addOneConfig(type, config, 0);
+    }
+    ::std::string addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context& __ctx)
+    {
+        return addOneConfig(type, config, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::IceInternal::Function<void (const ::std::string&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_addOneConfig(type, config, 0, response, exception, sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_addOneConfig(type, config, 0, ::Ice::newCallback(completed, sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::std::string&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_addOneConfig(type, config, &ctx, response, exception, sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_addOneConfig(type, config, &ctx, ::Ice::newCallback(completed, sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::std::string&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (const ::std::string&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::WMTSMODULE::WMTSPrx __proxy = ::WMTSMODULE::WMTSPrx::uncheckedCast(__result->getProxy());
+                ::std::string __ret;
+                try
+                {
+                    __ret = __proxy->end_addOneConfig(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (const ::std::string&)> _response;
+        };
+        return begin_addOneConfig(type, config, ctx, new Cpp11CB(response, exception, sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config)
+    {
+        return begin_addOneConfig(type, config, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context& __ctx)
+    {
+        return begin_addOneConfig(type, config, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_addOneConfig(type, config, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_addOneConfig(type, config, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::WMTSMODULE::Callback_WMTS_addOneConfigPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_addOneConfig(type, config, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_addOneConfigPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_addOneConfig(type, config, &__ctx, __del, __cookie);
+    }
+
+    ::std::string end_addOneConfig(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::std::string addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::OWSMODULE::OWSTask GetCapabilities(const ::std::string& token)
+    {
+        return GetCapabilities(token, 0);
+    }
+    ::OWSMODULE::OWSTask GetCapabilities(const ::std::string& token, const ::Ice::Context& __ctx)
+    {
+        return GetCapabilities(token, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_GetCapabilities(const ::std::string& token, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetCapabilities(token, 0, response, exception, sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetCapabilities(const ::std::string& token, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetCapabilities(token, 0, ::Ice::newCallback(completed, sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetCapabilities(const ::std::string& token, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_GetCapabilities(token, &ctx, response, exception, sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_GetCapabilities(const ::std::string& token, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_GetCapabilities(token, &ctx, ::Ice::newCallback(completed, sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_GetCapabilities(const ::std::string& token, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
     {
         class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
         {
@@ -331,84 +581,84 @@ private:
             
             ::std::function<void (const ::OWSMODULE::OWSTask&)> _response;
         };
-        return begin_GetCapabilities(ctx, new Cpp11CB(response, exception, sent));
+        return begin_GetCapabilities(token, ctx, new Cpp11CB(response, exception, sent));
     }
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_GetCapabilities()
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string& token)
     {
-        return begin_GetCapabilities(0, ::IceInternal::__dummyCallback, 0);
+        return begin_GetCapabilities(token, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string& token, const ::Ice::Context& __ctx)
     {
-        return begin_GetCapabilities(&__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_GetCapabilities(token, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string& token, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetCapabilities(0, __del, __cookie);
+        return begin_GetCapabilities(token, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string& token, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetCapabilities(&__ctx, __del, __cookie);
+        return begin_GetCapabilities(token, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::WMTSMODULE::Callback_WMTS_GetCapabilitiesPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string& token, const ::WMTSMODULE::Callback_WMTS_GetCapabilitiesPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetCapabilities(0, __del, __cookie);
+        return begin_GetCapabilities(token, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_GetCapabilitiesPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string& token, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_GetCapabilitiesPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetCapabilities(&__ctx, __del, __cookie);
+        return begin_GetCapabilities(token, &__ctx, __del, __cookie);
     }
 
     ::OWSMODULE::OWSTask end_GetCapabilities(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::OWSMODULE::OWSTask GetCapabilities(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_GetCapabilities(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
-    ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter& parameter)
+    ::OWSMODULE::OWSTask GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter)
     {
-        return GetTile(parameter, 0);
+        return GetTile(token, parameter, 0);
     }
-    ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx)
+    ::OWSMODULE::OWSTask GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx)
     {
-        return GetTile(parameter, &__ctx);
+        return GetTile(token, parameter, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_GetTile(parameter, 0, response, exception, sent);
+        return __begin_GetTile(token, parameter, 0, response, exception, sent);
     }
     ::Ice::AsyncResultPtr
-    begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_GetTile(parameter, 0, ::Ice::newCallback(completed, sent), 0);
+        return begin_GetTile(token, parameter, 0, ::Ice::newCallback(completed, sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_GetTile(parameter, &ctx, response, exception, sent);
+        return __begin_GetTile(token, parameter, &ctx, response, exception, sent);
     }
     ::Ice::AsyncResultPtr
-    begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_GetTile(parameter, &ctx, ::Ice::newCallback(completed, sent));
+        return begin_GetTile(token, parameter, &ctx, ::Ice::newCallback(completed, sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
+    ::Ice::AsyncResultPtr __begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
     {
         class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
         {
@@ -444,84 +694,84 @@ private:
             
             ::std::function<void (const ::OWSMODULE::OWSTask&)> _response;
         };
-        return begin_GetTile(parameter, ctx, new Cpp11CB(response, exception, sent));
+        return begin_GetTile(token, parameter, ctx, new Cpp11CB(response, exception, sent));
     }
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter)
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter)
     {
-        return begin_GetTile(parameter, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_GetTile(token, parameter, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx)
     {
-        return begin_GetTile(parameter, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_GetTile(token, parameter, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetTile(parameter, 0, __del, __cookie);
+        return begin_GetTile(token, parameter, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetTile(parameter, &__ctx, __del, __cookie);
+        return begin_GetTile(token, parameter, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::WMTSMODULE::Callback_WMTS_GetTilePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::WMTSMODULE::Callback_WMTS_GetTilePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetTile(parameter, 0, __del, __cookie);
+        return begin_GetTile(token, parameter, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_GetTilePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_GetTilePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetTile(parameter, &__ctx, __del, __cookie);
+        return begin_GetTile(token, parameter, &__ctx, __del, __cookie);
     }
 
     ::OWSMODULE::OWSTask end_GetTile(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::OWSMODULE::OWSTask GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
-    ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information)
+    ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information)
     {
-        return GetFeatureInfo(parameter, I, J, information, 0);
+        return GetFeatureInfo(token, parameter, I, J, information, 0);
     }
-    ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx)
+    ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx)
     {
-        return GetFeatureInfo(parameter, I, J, information, &__ctx);
+        return GetFeatureInfo(token, parameter, I, J, information, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_GetFeatureInfo(parameter, I, J, information, 0, response, exception, sent);
+        return __begin_GetFeatureInfo(token, parameter, I, J, information, 0, response, exception, sent);
     }
     ::Ice::AsyncResultPtr
-    begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, 0, ::Ice::newCallback(completed, sent), 0);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, 0, ::Ice::newCallback(completed, sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
+    begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_GetFeatureInfo(parameter, I, J, information, &ctx, response, exception, sent);
+        return __begin_GetFeatureInfo(token, parameter, I, J, information, &ctx, response, exception, sent);
     }
     ::Ice::AsyncResultPtr
-    begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, &ctx, ::Ice::newCallback(completed, sent));
+        return begin_GetFeatureInfo(token, parameter, I, J, information, &ctx, ::Ice::newCallback(completed, sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
+    ::Ice::AsyncResultPtr __begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context* ctx, const ::IceInternal::Function<void (const ::OWSMODULE::OWSTask&)>& response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& exception, const ::IceInternal::Function<void (bool)>& sent)
     {
         class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
         {
@@ -557,48 +807,48 @@ private:
             
             ::std::function<void (const ::OWSMODULE::OWSTask&)> _response;
         };
-        return begin_GetFeatureInfo(parameter, I, J, information, ctx, new Cpp11CB(response, exception, sent));
+        return begin_GetFeatureInfo(token, parameter, I, J, information, ctx, new Cpp11CB(response, exception, sent));
     }
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information)
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information)
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx)
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, 0, __del, __cookie);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, &__ctx, __del, __cookie);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::WMTSMODULE::Callback_WMTS_GetFeatureInfoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::WMTSMODULE::Callback_WMTS_GetFeatureInfoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, 0, __del, __cookie);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_GetFeatureInfoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string& token, const ::WMTSMODULE::GetTileParameter& parameter, ::Ice::Int I, ::Ice::Int J, const ::std::string& information, const ::Ice::Context& __ctx, const ::WMTSMODULE::Callback_WMTS_GetFeatureInfoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_GetFeatureInfo(parameter, I, J, information, &__ctx, __del, __cookie);
+        return begin_GetFeatureInfo(token, parameter, I, J, information, &__ctx, __del, __cookie);
     }
 
     ::OWSMODULE::OWSTask end_GetFeatureInfo(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -725,11 +975,15 @@ class WMTS : virtual public ::IceDelegate::OWSMODULE::DataOperation
 {
 public:
 
-    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+    virtual ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
-    virtual ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+    virtual ::std::string addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
-    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual ::OWSMODULE::OWSTask GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 };
 
 }
@@ -747,11 +1001,15 @@ class WMTS : virtual public ::IceDelegate::WMTSMODULE::WMTS,
 {
 public:
 
-    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::std::string addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::OWSMODULE::OWSTask GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
 
 }
@@ -769,11 +1027,15 @@ class WMTS : virtual public ::IceDelegate::WMTSMODULE::WMTS,
 {
 public:
 
-    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::std::string addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::OWSMODULE::OWSTask GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
 
 }
@@ -795,13 +1057,19 @@ public:
     virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
     static const ::std::string& ice_staticId();
 
-    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::OWSMODULE::byteSeq getConfit(::WMTSMODULE::SourceType, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___getConfit(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::std::string addOneConfig(::WMTSMODULE::SourceType, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___addOneConfig(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::OWSMODULE::OWSTask GetCapabilities(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetCapabilities(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual ::OWSMODULE::OWSTask GetTile(const ::WMTSMODULE::GetTileParameter&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::OWSMODULE::OWSTask GetTile(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetTile(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::OWSMODULE::OWSTask GetFeatureInfo(const ::std::string&, const ::WMTSMODULE::GetTileParameter&, ::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___GetFeatureInfo(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -829,6 +1097,206 @@ inline bool operator<(const WMTS& l, const WMTS& r)
 
 namespace WMTSMODULE
 {
+
+template<class T>
+class CallbackNC_WMTS_getConfit : public Callback_WMTS_getConfit_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::OWSMODULE::byteSeq&);
+
+    CallbackNC_WMTS_getConfit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::WMTSMODULE::WMTSPrx __proxy = ::WMTSMODULE::WMTSPrx::uncheckedCast(__result->getProxy());
+        ::OWSMODULE::byteSeq __ret;
+        try
+        {
+            __ret = __proxy->end_getConfit(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_WMTS_getConfitPtr
+newCallback_WMTS_getConfit(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::OWSMODULE::byteSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_WMTS_getConfit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_WMTS_getConfitPtr
+newCallback_WMTS_getConfit(T* instance, void (T::*cb)(const ::OWSMODULE::byteSeq&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_WMTS_getConfit<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_WMTS_getConfit : public Callback_WMTS_getConfit_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::OWSMODULE::byteSeq&, const CT&);
+
+    Callback_WMTS_getConfit(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::WMTSMODULE::WMTSPrx __proxy = ::WMTSMODULE::WMTSPrx::uncheckedCast(__result->getProxy());
+        ::OWSMODULE::byteSeq __ret;
+        try
+        {
+            __ret = __proxy->end_getConfit(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_WMTS_getConfitPtr
+newCallback_WMTS_getConfit(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::OWSMODULE::byteSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_WMTS_getConfit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_WMTS_getConfitPtr
+newCallback_WMTS_getConfit(T* instance, void (T::*cb)(const ::OWSMODULE::byteSeq&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_WMTS_getConfit<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_WMTS_addOneConfig : public Callback_WMTS_addOneConfig_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::std::string&);
+
+    CallbackNC_WMTS_addOneConfig(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::WMTSMODULE::WMTSPrx __proxy = ::WMTSMODULE::WMTSPrx::uncheckedCast(__result->getProxy());
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_addOneConfig(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_WMTS_addOneConfigPtr
+newCallback_WMTS_addOneConfig(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_WMTS_addOneConfig<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_WMTS_addOneConfigPtr
+newCallback_WMTS_addOneConfig(T* instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_WMTS_addOneConfig<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_WMTS_addOneConfig : public Callback_WMTS_addOneConfig_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::std::string&, const CT&);
+
+    Callback_WMTS_addOneConfig(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::WMTSMODULE::WMTSPrx __proxy = ::WMTSMODULE::WMTSPrx::uncheckedCast(__result->getProxy());
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_addOneConfig(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_WMTS_addOneConfigPtr
+newCallback_WMTS_addOneConfig(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_WMTS_addOneConfig<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_WMTS_addOneConfigPtr
+newCallback_WMTS_addOneConfig(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_WMTS_addOneConfig<T, CT>(instance, cb, excb, sentcb);
+}
 
 template<class T>
 class CallbackNC_WMTS_GetCapabilities : public Callback_WMTS_GetCapabilities_Base, public ::IceInternal::TwowayCallbackNC<T>
