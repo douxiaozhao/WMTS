@@ -36,8 +36,8 @@ public:
 
 	/*
 	 * @brief 获取数据的方法
-     * @parm dataBlock返回数据块 
-     * @parm taskID 
+     * @parm dataBlock返回数据块
+     * @parm taskID
 	 */
 	int GetData(const std::string &taskID, OWSMODULE::byteSeq& dataBlock);
 
@@ -45,7 +45,7 @@ private:
     /*
      * @brief 根据taskID从map中获取数据节点
      * @parm taskID 任务ID
-     * @return 数据节点 
+     * @return 数据节点
      */
 	DataNode* GetNodeByID(const std::string& taskID);  //根据任务ID获得任务
 

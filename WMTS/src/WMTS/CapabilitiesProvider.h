@@ -26,7 +26,7 @@ public:
     /*
      * @brief 线程池模板调用该函数来执行具体的任务
      */
-	virtual void process(); 
+	virtual void process();
     /*
      * @brief 获取数据节点
      * @return 数据节点
@@ -44,7 +44,7 @@ private:
 	bool insertSingleLayer(TiXmlElement *contents, TiXmlElement *e, const std::string &);
 
 private:
-	SingleBufNode *node;							    // 数据块节点 
+	SingleBufNode *node;							    // 数据块节点
 	std::map<std::string, PyramidStore*>* store_list;   // 保存各种数据源的金字塔仓库, 分别保存金字塔仓库和对应的类型
 	static const int BUFSIZE  = 1024 * 10;
 };

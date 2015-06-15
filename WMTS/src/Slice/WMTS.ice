@@ -21,10 +21,10 @@ module WMTSMODULE
      */
     enum SourceType
     {
-        localFS,
-        localDB,
-        localMultiDB,
-        cloud
+        LOCALFS,
+        LOCALDB,
+        LOCALMULTIDB,
+        CLOUD
     };
 
 	/*
@@ -32,7 +32,7 @@ module WMTSMODULE
 	*/
 	interface WMTS extends OWSMODULE::DataOperation
 	{
-        OWSMODULE::byteSeq getConfit(SourceType type);  // 获取服务器现有的某种数据源下支持的有哪些金字塔集合, xml 形式
+        OWSMODULE::byteSeq getConfig(SourceType type);  // 获取服务器现有的某种数据源下支持的有哪些金字塔集合, xml 形式
 
         string addOneConfig(SourceType type, string config); // 为某种类型的数据源新增一种金字塔集的配置，返回一个token
 

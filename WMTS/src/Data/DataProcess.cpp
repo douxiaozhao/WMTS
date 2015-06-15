@@ -50,9 +50,9 @@ OWSMODULE::OWSTask DataProcess::GetTaskState( const std::string& taskID )
 	}
 
 	task.state = node->GetTaskState();
-	
+
 	if(task.state == OWSMODULE::OWSFINISH)
-	{	
+	{
 #ifdef DEBUG
 		std::cout << "clear one node " << std::endl;
 #endif

@@ -35,7 +35,7 @@ int SingleFileNode::GetData( OWSMODULE::byteSeq& dataBlock )
 		SetTaskState(OWSMODULE::OWSERROR);
 		return 0;
 	}
-	
+
 	pos += num;
 	if(pos >= len)
 		SetTaskState(OWSMODULE::OWSFINISH);
