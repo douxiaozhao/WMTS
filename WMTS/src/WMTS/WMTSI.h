@@ -40,7 +40,7 @@ public:
 
     /*
      * @brief 检查任务状态
-     * @parm string 任务ID
+     * @parm string 任务IDkkk
      * @parm task 写入任务
      */
 	virtual void CheckState(const ::std::string&, ::OWSMODULE::OWSTask&, const ::Ice::Current&);
