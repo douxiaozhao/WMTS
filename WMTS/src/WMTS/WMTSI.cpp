@@ -11,8 +11,8 @@
 #include "EngineTileProvider.h"
 
 
-WMTSI::WMTSI(const std::string& name, const std::string& cfgFile) 
-	: _name(name), data_process(DataProcess::getInstance())
+WMTSI::WMTSI(const std::string& name, const std::string& cfgFile)
+	: _name(name), data_process(DataProcess::getInstance()), iMutex(new IceUtil::Mutex())
 {
 	initServer(cfgFile);           // 初始化TileEngine的数据源信息
 
@@ -34,6 +34,40 @@ WMTSI::~WMTSI(void)
 	store_list.clear();
 
 	DataProcess::destroyInstance();
+
+    delete(iMutex);
+}
+
+
+OWSMODULE::byteSeq
+WMTSI::getConfig(::WMTSMODULE::SourceType type, const ::Ice::Current& c)
+{
+    OWSMODULE::byteSeq data;
+    std::string stemp;
+    for(std::map<std::string, std::string>::iterator it = store_info.begin(); it != store_info.end(); ++it)
+    {
+        stemp.append(it->first).append(" : ").append(it->second).append("\n");
+    }
+    data.assign(stemp.c_str(), stemp.c_str()+stemp.size());
+    return data;
+}
+
+std::string
+WMTSI::addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Current& c)
+{
+    IceUtil::Mutex::Lock lock(*iMutex);
+    switch(type)
+    {
+        case WMTSMODULE::LOCALFS:
+            break;
+        case WMTSMODULE::LOCALDB:
+            break;
+        case WMTSMODULE::LOCALMULTIDB :
+            break;
+        case WMTSMODULE::CLOUD:
+            break;
+    }
+
 }
 
 OWSMODULE::OWSTask
@@ -69,7 +103,7 @@ WMTSI::GetCapabilities(const ::Ice::Current& c)
 	return task;
 }
 
-OWSMODULE::OWSTask 
+OWSMODULE::OWSTask
 	WMTSI::GetTile(const WMTSMODULE::GetTileParameter& parameter, const ::Ice::Current& c)
 {
 #ifdef OGCDEBUG
@@ -85,7 +119,7 @@ OWSMODULE::OWSTask
 	node->SetTaskID(task.taskID);
 	node->SetTaskState(task.state);
 
-	//DataProvider *provider = new LocalProvider(parameter.layer, parameter.style, parameter.format, 
+	//DataProvider *provider = new LocalProvider(parameter.layer, parameter.style, parameter.format,
 		//parameter.level, parameter.row, parameter.col, node);
 
 	//std::cout << parameter.layer << " " << parameter.level << " " << parameter.col << " " << parameter.row << std::endl;
@@ -106,7 +140,7 @@ OWSMODULE::OWSTask
 	layer = parameter.layer.substr(0, pos);
 	source = parameter.layer.substr(pos+1, parameter.layer.length()-1-pos);
 
-	std::map<std::string, PyramidStore*>::iterator it = store_list.find(source);      //获取该数据源对应的金字塔仓库 
+	std::map<std::string, PyramidStore*>::iterator it = store_list.find(source);      //获取该数据源对应的金字塔仓库
 	if(it == store_list.end())
 	{
 		delete node;
@@ -160,7 +194,7 @@ void
 	WMTSI::shutdown(const ::Ice::Current& c)
 {
 	std::cout << "shut down the service" << std::endl;
-	c.adapter->getCommunicator()->shutdown();        
+	c.adapter->getCommunicator()->shutdown();
 }
 
 void WMTSI::initServer( const std::string& cfg)
@@ -177,8 +211,12 @@ void WMTSI::initServer( const std::string& cfg)
 	std::string source_name;
 
 	for(int i = 0; i < 4; ++i)
+    while( !fin.eof() )
 	{
 		fin >> source_name;
+        if( source_name.compare("end") == 0)  # 配置的结束标识符
+            break;
+
 		fin >> flag;
 		if (flag == 0)
 		{
@@ -186,10 +224,12 @@ void WMTSI::initServer( const std::string& cfg)
 			continue;
 		}
 		fin >> num;
+        std::string info;
 		for(int j = 0; j < num; j++)
 		{
 			fin >> temp[j];
 			arv[j] = temp[j];
+            info.append(temp[j]).append(" ");
 		}
 		PyramidStore *store = NULL;
 		if(source_name == "cloud")
@@ -204,7 +244,9 @@ void WMTSI::initServer( const std::string& cfg)
 		if(store != NULL)
 		{
 			store->connect();
-			store_list.insert(make_pair(source_name, store));
+            std::string uuid = IceUtil::generateUUID();
+			store_list.insert(make_pair(uuid, store));
+            store_info.insert(make_pair(uuid, info));
 		}
 	}
 

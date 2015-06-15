@@ -18,7 +18,7 @@ void CapabilitiesProvider::getCapabilities()
 	node->AllocateMem(len);
 	memcpy(node->GetBuf(), contests, len);
 	releaseContests(contests);
-	
+
 	node->SetLen(len);
 	node->SetTaskState(OWSMODULE::OWSSTART);
 }
@@ -31,7 +31,7 @@ DataNode* CapabilitiesProvider::GetDataNode()
 char* CapabilitiesProvider::getContents(int &len)
 {
 	len = 0;
-	
+
 	TiXmlDocument *ogcDoc = new TiXmlDocument();
 	if(NULL == ogcDoc)
 		return NULL;
@@ -70,20 +70,20 @@ char* CapabilitiesProvider::getContents(int &len)
 		TiXmlElement *originalRoot = it->first->RootElement();
 		for(TiXmlElement *e = originalRoot->FirstChildElement(); e != NULL; e = e->NextSiblingElement())
 			insertSingleTileMatrixSet(contents, e, it->second);
-		
+
 		delete(it->first);
 	}
 
 #ifdef WMTS_DEBUG
 	ogcDoc->Print();
 #endif
-	
+
 	TiXmlPrinter printer;
 	ogcDoc->Accept(&printer);
 
 	len = printer.Size();
 	printer.SetLineBreak("\0");
-	
+
 	char *buf = new char[len];
 	memset(buf, 0, sizeof(buf));
 	memcpy(buf, printer.CStr(), len);
