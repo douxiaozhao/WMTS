@@ -27,14 +27,22 @@ module WMTSMODULE
         CLOUD
     };
 
+    /*
+     * 定义所有的金子塔的配置
+     */
+    struct PyramidCollection
+    {
+        string pyramidName;
+        string token;
+    };
+    sequence<PyramidCollection> pyramidSeq;
+
 	/*
 	   定义WMTS接口
 	*/
 	interface WMTS extends OWSMODULE::DataOperation
 	{
-        OWSMODULE::byteSeq getConfig(SourceType type);  // 获取服务器现有的某种数据源下支持的有哪些金字塔集合, xml 形式
-
-        string addOneConfig(SourceType type, string config); // 为某种类型的数据源新增一种金字塔集的配置，返回一个token
+        pyramidSeq getConfig(SourceType type);  // 获取服务器现有的某种数据源下支持的有金字塔集
 
 		OWSMODULE::OWSTask GetCapabilities(string token); // 返回一种类型支持的所有金字塔集合
 

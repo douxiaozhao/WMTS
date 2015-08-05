@@ -22,14 +22,6 @@ public:
 	virtual OWSMODULE::byteSeq getConfig(::WMTSMODULE::SourceType type, const ::Ice::Current& c);
 
     /*
-     * @brief 添加一个新的配置
-     * @parm type 金字塔数据源类型
-     * @parm config 配置
-     * @return 表示该配置的token信息
-     */
-	std::string addOneConfig(::WMTSMODULE::SourceType type, const ::std::string& config, const ::Ice::Current& c);
-
-    /*
      * @brief GetCapabilities
      * @parm token 表示一份金字塔集的配置
      * @parm Ice运行时
